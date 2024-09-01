@@ -1,4 +1,4 @@
-public class Task {
+public abstract class Task {
   private String task;
   private boolean isDone;
 
@@ -14,9 +14,19 @@ public class Task {
     return "[ ]";
   }
 
+  public Boolean getBooleanStatus() {
+    return this.isDone;
+  }
+
+  public String getTask() {
+    return this.task;
+  }
+
   public void changeDoneStatus(boolean status) {
     this.isDone = status;
   }
+
+  public abstract String toFileFormat();
 
   @Override
   public String toString() {

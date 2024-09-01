@@ -1,13 +1,16 @@
+import java.io.*;
 import java.util.ArrayList;
 
 public class TaskList {
 
   private ArrayList<Task>  tasks;
   //private int taskCount;
+  private static final String FILE_PATH = "./data/eli.txt";
 
   public TaskList() {
     this.tasks = new ArrayList<>();
     //this.taskCount = 0;
+    loadTasksFromFile();
   }
 
   public void addTask(String task) throws EmptyDescriptionException, UnknownCommandException{
@@ -80,5 +83,68 @@ public class TaskList {
     System.out.println("   " + removedTask);
     System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
     System.out.println("____________________________________________________________");
+  }
+  private void saveTasksToFile() {
+    try {
+      File file = new File(FILE_PATH);
+      file.getParentFile().mkdirs(); // Create parent directories if not exist
+      FileWriter writer = new FileWriter(file);
+      PrintWriter printWriter = new PrintWriter(writer);
+
+      for (Task task : tasks) {
+        printWriter.println(task.toFileFormat());
+      }
+
+      printWriter.close();
+    } catch (IOException e) {
+      System.out.println("An error occurred while saving tasks to file.");
+    }
+  }
+  private void loadTasksFromFile() {
+
+    try {
+      File file = new File(FILE_PATH);
+      if (!file.exists()) {
+        return; // No file to load from
+      }
+
+      BufferedReader reader = new BufferedReader(new FileReader(file));
+      String line;
+
+      while ((line = reader.readLine()) != null) {
+        String[] parts = line.split(" \\| ");
+        String type = parts[0];
+        boolean isDone = parts[1].equals("1");
+        String description = parts[2];
+
+        Task task;
+        switch (type) {
+          case "T":
+            task = new ToDo(description);
+            break;
+          case "D":
+            String by = parts[3];
+            task = new Deadline(description, by);
+            break;
+          case "E":
+            String fromTo = parts[3];
+            String[] eventDetails = fromTo.split(" to ");
+            task = new Event(description, eventDetails[0], eventDetails[1]);
+            break;
+          default:
+            throw new IOException("Invalid task type in file.");
+        }
+
+        if (isDone) {
+          task.changeDoneStatus(true);
+        }
+
+        tasks.add(task);
+      }
+
+      reader.close();
+    } catch (IOException e) {
+      System.out.println("An error occurred while loading tasks from file.");
+    }
   }
 }
