@@ -10,6 +10,10 @@ public class Event extends Task {
   }
 
   @Override
+  public String toFileFormat() {
+    return "E | " + (this.getBooleanStatus() ? "1" : "0") + " | " + this.getTask() + " | " + from + " to " + to;
+  }
+  @Override
   public String toString() {
     return "[E]" + super.toString() + " (from: " + from + " to: " + to + ")";
   }

@@ -61,8 +61,7 @@ public class Eli {
           int taskIdx = Integer.valueOf(taskIdxStr);
           taskList.delete(taskIdx);
         } else {
-          //taskList.addTask(input);
-          throw new UnknownCommandException();
+          taskList.addTask(input);
         }
       } catch (UnknownCommandException e) {
         System.out.println("____________________________________________________________");

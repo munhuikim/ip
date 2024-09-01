@@ -8,6 +8,10 @@ public class Deadline extends Task {
   }
 
   @Override
+  public String toFileFormat() {
+    return "D | " + (this.getBooleanStatus() ? "1" : "0") + " | " + this.getTask() + " | " + by;
+  }
+  @Override
   public String toString() {
     return "[D]" + super.toString() + " (by: " + by + ")";
   }
