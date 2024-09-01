@@ -1,49 +1,63 @@
 import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class TaskList {
 
   private ArrayList<Task>  tasks;
   //private int taskCount;
+  private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
 
   public TaskList() {
     this.tasks = new ArrayList<>();
     //this.taskCount = 0;
   }
 
-  public void addTask(String task) throws EmptyDescriptionException, UnknownCommandException{
+  public void addTask(String task) throws EliException{
     // todo borrow book
     // deadline return book /by Sunday
+    // deadline return book /by 2/12/2019 1800
     // event project meeting /from Mon 2pm /to 4pm
 
-    String[] parts = task.split(" ", 2);
-    String type = parts[0];
-    String details = parts[1];
-
-    if (details.isEmpty()) {
-      throw new EmptyDescriptionException(type);
-    }
-
-    Task newTask;
-    if (type.equalsIgnoreCase("todo")) {
-      newTask = new ToDo(details);
-    } else if (type.equalsIgnoreCase("deadline")) {
-      String[] deadlineParts = details.split(" /by ");
-      newTask = new Deadline(deadlineParts[0], deadlineParts[1]);
-    } else if (type.equalsIgnoreCase("event")) {
-      String[] eventParts = details.split(" /from | /to ");
-      newTask = new Event(eventParts[0], eventParts[1], eventParts[2]);
-    } else {
-      // newTask = new Task(task);
-      throw new UnknownCommandException();
-    }
     if (tasks.size() < 100) {
+      Task newTask = createTask(task);
       tasks.add(newTask);
       System.out.println("____________________________________________________________");
       System.out.println(" added: " + newTask);
+      System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
       System.out.println("____________________________________________________________");
 
     } else {
       System.out.println("Task list is full!!!");
+    }
+  }
+
+  private Task createTask(String task) throws EliException {
+    String[] parts = task.split(" ", 2);
+    String type = parts[0];
+    String details = parts.length > 1 ? parts[1].trim() : "";
+
+    if (details.isEmpty()) {
+      throw new EliException(type);
+    }
+
+    switch (type.toLowerCase()) {
+      case "todo":
+        return new ToDo(details);
+      case "deadline":
+        String[] deadlineParts = details.split(" /by ", 2);
+        if (deadlineParts.length < 2) {
+          throw new EliException("Please provide a deadline in the format: 'deadline [description] /by [yyyy-MM-dd hhmm]'.");
+        }
+        return new Deadline(deadlineParts[0].trim(), deadlineParts[1].trim());
+      case "event":
+        String[] eventParts = details.split(" /from | /to ");
+        if (eventParts.length < 3) {
+          throw new EliException("Please provide an event in the format: 'event [description] /from [yyyy-MM-dd hhmm] /to [yyyy-MM-dd hhmm]'.");
+        }
+        return new Event(eventParts[0].trim(), eventParts[1].trim(), eventParts[2].trim());
+      default:
+        throw new UnknownCommandException();
     }
   }
 
