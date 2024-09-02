@@ -1,7 +1,28 @@
 Hello from
- ____        _        
-|  _ \ _   _| | _____ 
-| | | | | | | |/ / _ \
-| |_| | |_| |   <  __/
-|____/ \__,_|_|\_\___|
+  _____   _       _____ 
+ | ____| | |     |__ __|
+ | |___  | |       |_|  
+ |  ___| | |       |_|  
+ | |___| | |___    |_|  
+ |_____| |_____| |_____|
 
+Hello! I'm Eli
+What can I do for you?
+added: [T][ ] cs2101 notes taking
+____________________________________________________________
+Here are the tasks in your list:
+1. [T][ ] cs2101 notes taking
+____________________________________________________________
+added: [D][ ] assignment 1 (by: Saturday)
+____________________________________________________________
+added: [D][ ] quiz 3 (by: Friday)
+____________________________________________________________
+added: [E][ ] project meeting (from: Tue 10pm to: 11pm)
+____________________________________________________________
+Here are the tasks in your list:
+1. [T][ ] cs2101 notes taking
+2. [D][ ] assignment 1 (by: Saturday)
+3. [D][ ] quiz 3 (by: Friday)
+4. [E][ ] project meeting (from: Tue 10pm to: 11pm)
+___________________________________________________________
+Bye. Hope to see you again soon!
